@@ -10,7 +10,7 @@
 
         public string Name { get; set; } = string.Empty;
 
-        public string ProductDescription { get; set; } = string.Empty ;
+        public string ProductDescription { get; set; } = string.Empty;
 
         public string ProductImageURL { get; set; } = string.Empty;
 

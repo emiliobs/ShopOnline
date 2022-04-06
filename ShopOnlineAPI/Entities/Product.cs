@@ -20,6 +20,6 @@ namespace ShopOnlineAPI.Entities
         [DisplayFormat(DataFormatString = "{0:N2}")]
         public int Qty { get; set; }
 
-        public int  CategoryId { get; set; }
+        public int CategoryId { get; set; }
     }
 }
