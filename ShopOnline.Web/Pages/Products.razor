@@ -12,32 +12,25 @@ else
     <div class="mb-5"></div>
     if (Products.Count() > 0)
     {
-        const int itemsPerRow = 4;
-        var productsRowList = new List<ProductDto>();
 
-       for (var i = 0; i < Products.Count(); i++)
-       {
-           productsRowList = Products.Skip(i * itemsPerRow).Take(itemsPerRow).ToList();
+        var groupedProductsByCategory = from product in Products
+                                        group product by product.CategoryId
+                                        into prodByCatGroup
+                                        orderby prodByCatGroup.Key
+                                        select prodByCatGroup;
        
-           <div class="row mt-3">
-               @foreach (var item in  productsRowList)
-              {
-                  <div class="col-md-3 mb-2">
-                      <a href="#">
-                          <div class="card">
-                              <img class="img-thumbnail" src="@item.ImageURL">
-                              <div class="card-body">
-                                  <h5 class="card-title mb-3">@item.Name</h5>
-                                  <p class="card-text">@item.Price.ToString("0:C2")</p>
-                              </div>
-                          </div>
-                      </a>
-                  </div>
+        @foreach (var prodGroup in groupedProductsByCategory)
+        {
+            <h4>@prodGroup.FirstOrDefault(pg => pg.CategoryId == prodGroup.Key).CategoryName</h4>                      
+                                       
+            <div class="row mt-3">
+                  <DisplayProducts Products="@prodGroup"></DisplayProducts>
+             </div>
 
-              }
-           </div>
+             <hr  class="mb-3"/>
+        }
 
-       }
+     }
 
-    }
+    
 }
