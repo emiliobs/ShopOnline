@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 using ShopOnlineAPI.Data;
 using ShopOnlineAPI.Repositories;
 using ShopOnlineAPI.Repositories.Contracts;
@@ -26,6 +27,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(police =>
+{
+    police.WithOrigins("http://localhost:7264", "https://localhost:7264")
+          .AllowAnyMethod()
+          .WithHeaders(HeaderNames.ContentType);
+    
+});
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
