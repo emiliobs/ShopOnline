@@ -1,0 +1,30 @@
+﻿@page "/ProductDetails/{Id:int}"
+@inherits ProductDetailsBase
+
+@if(Product is null && ErrorMessage is null)
+{
+    <DisplaySpinner></DisplaySpinner>
+}
+else if(ErrorMessage != null)
+ {
+     <DisplayError ErrorMessge = "@ErrorMessage"></DisplayError>
+ }
+ else
+ {
+     <h3 class="mb-5 text-center">Product Details</h3>
+     <div class="row">
+         <div class="col-md-6 mb-4">
+             <img class="img-fluid" src="@Product.ImageURL">
+         </div>
+         <div class ="col-md-6">
+             <h3>@Product.Name</h3>
+             <p class="mb-4">@Product.Description</p>
+             <p class="mb-4">
+                 @Product.Price.ToString("C")&nbsp;(@Product.Qty in Stock)
+             </p>
+             <div>
+                 <button class="btn btn-success"><b>Add to Card</b></button>
+             </div>
+         </div>
+     </div>
+ }

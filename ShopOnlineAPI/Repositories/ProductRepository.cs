@@ -14,19 +14,13 @@ namespace ShopOnlineAPI.Repositories
             this._context = context;
         }
         public async Task<IEnumerable<ProductCategory>> GetCategories() => await _context.ProductCategories.ToListAsync();
-       
 
-        public Task<ProductCategory> GetCategory(int id)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<Product> GetItem(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<ProductCategory> GetCategory(int id) => await _context.ProductCategories.SingleOrDefaultAsync(pc => pc.Id == id);  
 
-        public async Task<IEnumerable<Product>> GetItems() => await _context.products.ToListAsync();
+        public async Task<Product> GetItem(int id) => await _context.products.FindAsync(id);
+
+        public async Task<IEnumerable<Product>> GetItems() =>await _context.products.ToListAsync();
        
     }
 }
