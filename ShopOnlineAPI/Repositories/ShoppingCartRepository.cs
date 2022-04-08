@@ -50,23 +50,23 @@ namespace ShopOnlineAPI.Repositories
                           {
                               Id = cartItem.Id,
                               ProductId = cartItem.ProductId,
-                              CartId= cartItem.CartId,
+                              CartId = cartItem.CartId,
                               Qty = cartItem.Qty,
                           }).SingleOrDefaultAsync();
         }
 
         public async Task<IEnumerable<CartItem>> GetAllItemsByUserIdAsync(int userId)
         {
-            return await (from cart in _context.Carts
+            return await (from cart in this._context.Carts
                           join cartItem in _context.CartItems
                           on cart.Id equals cartItem.CartId
-                          where cart.UserId.Equals(userId)
+                          where cart.UserId == userId
                           select new CartItem
                           {
                               Id = cartItem.Id,
                               ProductId = cartItem.ProductId,
-                              CartId = cartItem.CartId,
                               Qty = cartItem.Qty,
+                              CartId = cartItem.CartId
                           }).ToListAsync();
         }
 

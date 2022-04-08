@@ -11,16 +11,26 @@ namespace ShopOnlineAPI.Repositories
 
         public ProductRepository(ShopOnlineDbContext context)
         {
-            this._context = context;
+            _context = context;
         }
-        public async Task<IEnumerable<ProductCategory>> GetCategories() => await _context.ProductCategories.ToListAsync();
+        public async Task<IEnumerable<ProductCategory>> GetCategories()
+        {
+            return await _context.ProductCategories.ToListAsync();
+        }
 
+        public async Task<ProductCategory> GetCategory(int id)
+        {
+            return await _context.ProductCategories.SingleOrDefaultAsync(pc => pc.Id == id);
+        }
 
-        public async Task<ProductCategory> GetCategory(int id) => await _context.ProductCategories.SingleOrDefaultAsync(pc => pc.Id == id);  
+        public async Task<Product> GetItem(int id)
+        {
+            return await _context.products.FindAsync(id);
+        }
 
-        public async Task<Product> GetItem(int id) => await _context.products.FindAsync(id);
-
-        public async Task<IEnumerable<Product>> GetItems() =>await _context.products.ToListAsync();
-       
+        public async Task<IEnumerable<Product>> GetItems()
+        {
+            return await _context.products.ToListAsync();
+        }
     }
 }

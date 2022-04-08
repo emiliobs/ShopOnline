@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShopOnline.Models.Dtos;
 using ShopOnlineAPI.Extensions;
 using ShopOnlineAPI.Repositories.Contracts;
@@ -15,7 +14,7 @@ namespace ShopOnlineAPI.Controllers
 
         public ProductsController(IProductRepository productRepository)
         {
-            this._productRepository = productRepository;
+            _productRepository = productRepository;
         }
 
         [HttpGet]
@@ -23,8 +22,8 @@ namespace ShopOnlineAPI.Controllers
         {
             try
             {
-                var products = await _productRepository.GetItems();
-                var productCategories = await _productRepository.GetCategories();
+                IEnumerable<Entities.Product> products = await _productRepository.GetItems();
+                IEnumerable<Entities.ProductCategory> productCategories = await _productRepository.GetCategories();
 
                 if (products is null || productCategories is null)
                 {
@@ -49,16 +48,16 @@ namespace ShopOnlineAPI.Controllers
         {
             try
             {
-                var product = await _productRepository.GetItem(id);
+                Entities.Product product = await _productRepository.GetItem(id);
                 if (product is null)
                 {
                     return BadRequest();
                 }
                 else
                 {
-                    var productCategory = await _productRepository.GetCategory(product.CategoryId);
+                    Entities.ProductCategory productCategory = await _productRepository.GetCategory(product.CategoryId);
 
-                    var productDto = product.ConvertToDto(productCategory);
+                    ProductDto productDto = product.ConvertToDto(productCategory);
 
                     return Ok(productDto);
                 }

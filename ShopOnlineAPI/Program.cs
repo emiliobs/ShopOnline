@@ -33,7 +33,7 @@ app.UseCors(police =>
     police.WithOrigins("http://localhost:7264", "https://localhost:7264")
           .AllowAnyMethod()
           .WithHeaders(HeaderNames.ContentType);
-    
+
 });
 app.UseHttpsRedirection();
 

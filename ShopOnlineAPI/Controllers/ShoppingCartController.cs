@@ -26,6 +26,7 @@ namespace ShopOnlineAPI.Controllers
             try
             {
                 IEnumerable<Entities.CartItem> cartItems = await _shoppingCartRepository.GetAllItemsByUserIdAsync(userId);
+
                 if (cartItems is null)
                 {
                     return NoContent();
@@ -76,17 +77,19 @@ namespace ShopOnlineAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CartItemDto>> PoatItem([FromBody] CartItemToAddDto cartItemToAddDto)
+        public async Task<ActionResult<CartItemDto>> PostItem([FromBody] CartItemToAddDto cartItemToAddDto)
         {
             try
             {
                 Entities.CartItem newCartItem = await _shoppingCartRepository.AddItemAsync(cartItemToAddDto);
+
                 if (newCartItem == null)
                 {
                     return NoContent();
                 }
 
                 Product product = await _productRepository.GetItem(newCartItem.ProductId);
+
                 if (product == null)
                 {
                     throw new Exception($"Something went wrong when attempting to retrieve product (productId:({cartItemToAddDto.ProductId}");

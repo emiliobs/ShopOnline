@@ -9,9 +9,15 @@ namespace ShopOnline.Web.Pages
         [Parameter]
         public int Id { get; set; }
 
-        [Inject]        
-        
+        [Inject]
+
         public IProductService ProductService { get; set; }
+
+        [Inject]
+        private IShoppingCartService ShoppingCartService { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         public ProductDto Product { get; set; }
 
@@ -27,6 +33,21 @@ namespace ShopOnline.Web.Pages
             {
 
                 ErrorMessage = ex.Message;
+            }
+        }
+
+        protected async Task AddToCart_Click(CartItemToAddDto cartItemToAddDto)
+        {
+            try
+            {
+                CartItemDto cartItemDto = await ShoppingCartService.AddItem(cartItemToAddDto);
+                NavigationManager.NavigateTo("/ShoppingCart");
+
+            }
+            catch (Exception)
+            {
+
+                //Log Exception
             }
         }
 

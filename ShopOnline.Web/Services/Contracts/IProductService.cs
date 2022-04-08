@@ -8,5 +8,5 @@ namespace ShopOnline.Web.Services.Contracts
 
         Task<ProductDto> GetItem(int id);
 
-    }   
+    }
 }

@@ -23,7 +23,15 @@ else if(ErrorMessage != null)
                  @Product.Price.ToString("C")&nbsp;(@Product.Qty in Stock)
              </p>
              <div>
-                 <button class="btn btn-success"><b>Add to Card</b></button>
+                 <button class="btn btn-success" 
+                    @onclick="() => (AddToCart_Click(new CartItemToAddDto
+                    {
+                        CartId = HardCode.CardId,
+                        ProductId = Product.Id,
+                        Qty = 1,
+                    }))">
+                    <b>Add to Card</b>
+                </button>
              </div>
          </div>
      </div>

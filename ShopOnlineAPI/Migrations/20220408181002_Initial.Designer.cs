@@ -11,8 +11,8 @@ using ShopOnlineAPI.Data;
 namespace ShopOnlineAPI.Migrations
 {
     [DbContext(typeof(ShopOnlineDbContext))]
-    [Migration("20220406000037_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220408181002_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
