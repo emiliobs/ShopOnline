@@ -3,7 +3,7 @@ namespace ShopOnline.Models.Dtos
 {
     public class CartItemToAddDto
     {
-        public int Id { get; set; }
+        public int CartId { get; set; }
 
         public int ProductId { get; set; }
 
