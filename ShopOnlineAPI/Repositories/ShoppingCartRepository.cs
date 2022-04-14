@@ -42,17 +42,15 @@ namespace ShopOnlineAPI.Repositories
 
         public async Task<CartItem> DeleteItemByIdAsync(int id)
         {
-            return await (from cart in _context.Carts
-                          join cartItem in _context.CartItems
-                          on cart.Id equals cartItem.CartId
-                          where cartItem.Id == id
-                          select new CartItem
-                          {
-                              Id = cartItem.Id,
-                              ProductId = cartItem.ProductId,
-                              CartId = cartItem.CartId,
-                              Qty = cartItem.Qty,
-                          }).SingleOrDefaultAsync();
+            var item = await _context.CartItems.FindAsync(id);
+
+            if (item != null)
+            {
+                _context.CartItems.Remove(item);
+                await _context.SaveChangesAsync();
+            }
+
+            return item;
         }
 
         public async Task<IEnumerable<CartItem>> GetAllItemsByUserIdAsync(int userId)
@@ -70,9 +68,19 @@ namespace ShopOnlineAPI.Repositories
                           }).ToListAsync();
         }
 
-        public Task<CartItem> GetItemByIdAsync(int id)
+        public async Task<CartItem> GetItemByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await(from cart in _context.Carts
+                         join cartItem in _context.CartItems
+                         on cart.Id equals cartItem.CartId
+                         where cartItem.Id == id
+                         select new CartItem
+                         {
+                             Id = cartItem.Id,
+                             ProductId = cartItem.ProductId,
+                             CartId = cartItem.CartId,
+                             Qty = cartItem.Qty,
+                         }).SingleOrDefaultAsync();
         }
 
         public Task<CartItem> UpdateQtyAsync(int id, CartItemQtyUpdateDto cartItemQtyUpdateDto)
