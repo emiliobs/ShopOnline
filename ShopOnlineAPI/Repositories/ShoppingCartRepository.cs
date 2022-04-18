@@ -93,5 +93,21 @@ namespace ShopOnlineAPI.Repositories
         {
             return await _context.CartItems.AnyAsync(c => c.CartId == cartId && c.ProductId == productId);
         }
+
+        public async Task<CartItem> UpdateQty(int id, CartItemQtyUpdateDto cartItemQtyUpdateDto)
+        {
+            var item = await _context.CartItems.FindAsync(id);
+
+            if (item != null)
+            {
+                item.Qty = cartItemQtyUpdateDto.Qty;
+                await _context.SaveChangesAsync();
+
+                return item;
+            }
+
+
+            return null;
+        }
     }
 }

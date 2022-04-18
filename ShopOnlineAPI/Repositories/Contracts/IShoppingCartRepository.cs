@@ -10,5 +10,6 @@ namespace ShopOnlineAPI.Repositories.Contracts
         Task<CartItem> DeleteItemByIdAsync(int id);
         Task<CartItem> GetItemByIdAsync(int id);
         Task<IEnumerable<CartItem>> GetAllItemsByUserIdAsync(int userId);
+        Task<CartItem> UpdateQty(int id, CartItemQtyUpdateDto cartItemQtyUpdateDto);
     }
 }

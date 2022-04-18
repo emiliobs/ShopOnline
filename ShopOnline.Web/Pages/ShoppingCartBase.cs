@@ -11,6 +11,10 @@ namespace ShopOnline.Web.Pages
 
         public List<CartItemDto> ShoppingCartItems { get; set; }
 
+        public string TotalPrice { get; set; }
+
+        public int TotalQuantity { get; set; }
+
         public string ErrorMessage { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -18,6 +22,7 @@ namespace ShopOnline.Web.Pages
             try
             {
                 ShoppingCartItems = await ShoppingCartService.GetAllItemsByUserId(HardCode.UserId);
+                CalculateCartSummaryTotal();
             }
             catch (Exception ex)
             {
@@ -26,11 +31,50 @@ namespace ShopOnline.Web.Pages
             }
         }
 
+        protected async Task UpdateQtyCartItem_Click(int id, int qty)
+        {
+            try
+            {
+                if (qty > 0)
+                {
+                    var updateItemDto = new CartItemQtyUpdateDto
+                    {
+                        CartItemId = id,
+                        Qty = qty,
+                    };
+
+                    var returnedUpdateItemDto = await ShoppingCartService.UpdateQty(updateItemDto);
+
+                    UpdateItemTotalPrice(returnedUpdateItemDto);
+
+                    CalculateCartSummaryTotal();
+                }
+                else
+                {
+                    var item = ShoppingCartItems.FirstOrDefault(sci => sci.Id == id);
+
+                    if (item != null)
+                    {
+                        item.Qty = 1;
+                        item.TotalPrice = item.Price;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+
         protected async Task DeleteCartItem_Click(int id)
         {
             var cartItemDto = await ShoppingCartService.DeleteItem(id);
 
             RemoveCartItem(id);
+            CalculateCartSummaryTotal();
         }
 
         private CartItemDto GetCartItemItem(int id)
@@ -43,6 +87,33 @@ namespace ShopOnline.Web.Pages
             var cartItemDto = GetCartItemItem(id);
 
             ShoppingCartItems.Remove(cartItemDto);
+        }
+
+        private void UpdateItemTotalPrice(CartItemDto cartItemDto)
+        {
+            var item = GetCartItemItem(cartItemDto.Id);
+
+            if (item != null)
+            {
+                item.TotalPrice = cartItemDto.Price * cartItemDto.Qty;
+            }
+        }
+
+        private void CalculateCartSummaryTotal()
+        {
+            SetTotalPrice();
+            SetTotalQuantity();
+        }
+
+
+        private void SetTotalPrice()
+        {
+            TotalPrice = ShoppingCartItems.Sum(s => s.TotalPrice).ToString("C"); 
+        }
+
+        private void SetTotalQuantity()
+        {
+            TotalQuantity = ShoppingCartItems.Sum(s => s.Qty);
         }
     }
 }
